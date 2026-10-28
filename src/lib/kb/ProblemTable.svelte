@@ -6,15 +6,14 @@
 
   let { ticket }: { ticket: number } = $props();
 
-  // Three problems: the desk's own notes split the one-day moves out of `parser`.
-  type Problem = 'parser' | 'hint' | 'one-day';
-  const problemOf = (r: Report): Problem | null =>
-    notes.oneDayMove.includes(r.id) ? 'one-day' : causeOf(r, tenantOf(r));
+  // Counted the way the desk table counts: the one-day moves stay filed under `parser` and are listed again on their own row.
+  const problemOf = (r: Report) =>
+    causeOf(r, tenantOf(r));
 
   const merged = $derived(uniqueById(reports as Report[]).filter((r) => r.mergedInto === ticket));
   const rows = $derived(
     (['parser', 'hint', 'one-day'] as const).map((p) => {
-      const rs = merged.filter((r) => problemOf(r) === p);
+      const rs = merged.filter((r) => (p === 'one-day' ? notes.oneDayMove.includes(r.id) : problemOf(r) === p));
       const days = rs.map((r) => r.receivedAt.slice(0, 10)).sort();
       return {
         problem: p,

@@ -26,14 +26,14 @@ Not one issue. A parser fix alone leaves 38 of the 412 reports open.
 <ProblemTable ticket={4471} />
 
 1. **`parser`: the shared parser reads dates month first.** Tenants that write the day first
-   get day and month flipped. This is the bug the #4471 page describes.
+   get day and month flipped. This is the bug the #4471 page describes. 379 reports.
 2. **`hint`: booking-v3 prints `MM/DD/YYYY` under its date field.** People at day-first tenants
    (alder.physio, copper.studio, pale.harbour) type what the hint tells them. The form reads it
    their way. Only `form` reports. Intake tagged 15 of these 33 as `parser`, so a parser fix
    will not help them. The fix is the hint on booking-v3.
 3. **`one-day`: dates move by exactly one day.** This is not a month and day flip. The desk
-   notes already read 5 reports this way, but the table on the #4471 page counts them under
-   `parser`. Two of them point at time zones. The cause is not confirmed.
+   notes read 5 reports this way. The desk table files them under `parser` and footnotes
+   them, so they are inside the 379 and listed again on their own row. Two of them point at time zones. The cause is not confirmed.
 
 ## How the reports were placed
 

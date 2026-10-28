@@ -7,13 +7,13 @@
 <h2>What the 412 reports hold</h2>
 <p><strong>412</strong> reports merged into #4471 · <strong>3</strong> problems</p>
 <table><thead><tr><th>problem</th><th>reports</th><th>tagged parser by intake</th><th>tenants</th><th>seen</th></tr></thead><tbody>
-<tr><td><code>parser</code></td><td>374</td><td>351</td><td>11</td><td>2026-04-01 → 2026-10-04</td></tr>
+<tr><td><code>parser</code></td><td>379</td><td>356</td><td>11</td><td>2026-04-01 → 2026-10-04</td></tr>
 <tr><td><code>hint</code></td><td>33</td><td>15</td><td>3</td><td>2026-04-17 → 2026-09-22</td></tr>
 <tr><td><code>one-day</code></td><td>5</td><td>5</td><td>5</td><td>2026-04-02 → 2026-10-04</td></tr>
 </tbody></table>
-<ol><li><b><code>parser</code>: the shared parser reads dates month first.</b> Tenants that write the day first get day and month flipped. This is the bug the #4471 page describes.</li>
+<ol><li><b><code>parser</code>: the shared parser reads dates month first.</b> Tenants that write the day first get day and month flipped. This is the bug the #4471 page describes. 379 reports.</li>
 <li><b><code>hint</code>: booking-v3 prints <code>MM/DD/YYYY</code> under its date field.</b> People at day-first tenants (alder.physio, copper.studio, pale.harbour) type what the hint tells them. The form reads it their way. Only <code>form</code> reports. Intake tagged 15 of these 33 as <code>parser</code>, so a parser fix will not help them. The fix is the hint on booking-v3.</li>
-<li><b><code>one-day</code>: dates move by exactly one day.</b> This is not a month and day flip. The desk notes already read 5 reports this way, but the table on the #4471 page counts them under <code>parser</code>. Two of them point at time zones. The cause is not confirmed.</li></ol>
+<li><b><code>one-day</code>: dates move by exactly one day.</b> This is not a month and day flip. The desk notes read 5 reports this way. The desk table files them under <code>parser</code> and footnotes them, so they are inside the 379 and listed again on their own row. Two of them point at time zones. The cause is not confirmed.</li></ol>
 <h2>How the reports were placed</h2>
 <ul><li>The ticket export has repeated rows. One id is one report: 427 rows, 412 reports.</li><li>Cause comes from the <b>tenant</b> (its locale and booking form), not from intake's browser guess. The rule is in <code>causeOf</code> in <code>causes.ts</code>.</li><li>One-day moves come from <code>desk-notes.json</code>.</li></ul>
 <h2>Tickets</h2>
