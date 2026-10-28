@@ -1,0 +1,24 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>#4471 · three problems, not one · support kb</title>
+<style>body{margin:0;background:#fbfaf7;color:#1d1d1b;font:16px/1.6 system-ui,sans-serif}.kb{max-width:760px;margin:0 auto;padding:2rem 16px 4rem}table{border-collapse:collapse;width:100%;margin:1rem 0;font-size:.92rem}th,td{border-bottom:1px solid #e3e0d8;padding:.35rem .5rem;text-align:left}code{font-family:ui-monospace,Menlo,monospace;font-size:.88em}a{color:#2f6f5e}.meta{color:#6b6a66;font-size:.85rem}aside{border-left:4px solid #b4501f;background:#fbeee6;padding:.5rem 1rem;margin:1rem 0}.stamp{margin-top:2rem;font:.85rem ui-monospace,monospace;color:#6b6a66}.stamp b{color:#2f6f5e}footer{margin-top:3rem;color:#6b6a66;font-size:.8rem;border-top:1px solid #e3e0d8;padding-top:1rem}</style></head><body><div class="kb">
+<a href="/kb" class="meta">support desk · kb</a><h1>#4471 · three problems, not one</h1>
+<p class="meta">owner <b>support desk</b> · draft · reviewed 2026-10-28 · 0 days ago</p>
+<p>The <a href="/kb/incidents/4471">#4471 page</a> says the 412 merged reports are one bug. They are three. Each has its own cause and needs its own fix and its own ticket.</p>
+<aside>Not one issue. A parser fix alone leaves 38 of the 412 reports open.</aside>
+<h2>What the 412 reports hold</h2>
+<p><strong>412</strong> reports merged into #4471 · <strong>3</strong> problems</p>
+<table><thead><tr><th>problem</th><th>reports</th><th>tagged parser by intake</th><th>tenants</th><th>seen</th></tr></thead><tbody>
+<tr><td><code>parser</code></td><td>374</td><td>351</td><td>11</td><td>2026-04-01 → 2026-10-04</td></tr>
+<tr><td><code>hint</code></td><td>33</td><td>15</td><td>3</td><td>2026-04-17 → 2026-09-22</td></tr>
+<tr><td><code>one-day</code></td><td>5</td><td>5</td><td>5</td><td>2026-04-02 → 2026-10-04</td></tr>
+</tbody></table>
+<ol><li><b><code>parser</code>: the shared parser reads dates month first.</b> Tenants that write the day first get day and month flipped. This is the bug the #4471 page describes.</li>
+<li><b><code>hint</code>: booking-v3 prints <code>MM/DD/YYYY</code> under its date field.</b> People at day-first tenants (alder.physio, copper.studio, pale.harbour) type what the hint tells them. The form reads it their way. Only <code>form</code> reports. Intake tagged 15 of these 33 as <code>parser</code>, so a parser fix will not help them. The fix is the hint on booking-v3.</li>
+<li><b><code>one-day</code>: dates move by exactly one day.</b> This is not a month and day flip. The desk notes already read 5 reports this way, but the table on the #4471 page counts them under <code>parser</code>. Two of them point at time zones. The cause is not confirmed.</li></ol>
+<h2>How the reports were placed</h2>
+<ul><li>The ticket export has repeated rows. One id is one report: 427 rows, 412 reports.</li><li>Cause comes from the <b>tenant</b> (its locale and booking form), not from intake's browser guess. The rule is in <code>causeOf</code> in <code>causes.ts</code>.</li><li>One-day moves come from <code>desk-notes.json</code>.</li></ul>
+<h2>Tickets</h2>
+<p>One GitHub issue per problem, each with its report count: <a href="https://github.com/pkulikow/what-it-shows-4471/issues/1">issue 1</a> (parser), <a href="https://github.com/pkulikow/what-it-shows-4471/issues/2">issue 2</a> (hint), <a href="https://github.com/pkulikow/what-it-shows-4471/issues/3">issue 3</a> (one-day).</p>
+<h2>Lessons</h2>
+<ul><li>Merging on a subject line (<a href="/kb/decisions/0001-dedupe-by-subject">decision 0001</a>) joined reports that only look alike. Read the body and the tenant before you merge.</li><li>A count in the title of a ticket hides how many bugs sit under it.</li></ul>
+<p class="stamp">desk ref <b>DR-K453-30X7</b></p>
+<footer>Pages are written by people. Tables and charts are built from data at render time.</footer></div></body></html>

@@ -1,0 +1,58 @@
+---
+layout: runbook
+title: '#4471 · three problems, not one'
+owner: support desk
+status: draft
+reviewed: 2026-10-28
+signature: pkulikow
+---
+
+<script>
+  import ProblemTable from '#lib/kb/ProblemTable.svelte';
+  import Callout from '#lib/kb/Callout.svelte';
+  import RenderStamp from '#lib/kb/RenderStamp.svelte';
+  const signature = 'pkulikow';
+</script>
+
+The [#4471 page](/kb/incidents/4471) says the 412 merged reports are one bug. They are three.
+Each has its own cause and needs its own fix and its own ticket.
+
+<Callout kind="warn">
+Not one issue. A parser fix alone leaves 38 of the 412 reports open.
+</Callout>
+
+## What the 412 reports hold
+
+<ProblemTable ticket={4471} />
+
+1. **`parser`: the shared parser reads dates month first.** Tenants that write the day first
+   get day and month flipped. This is the bug the #4471 page describes.
+2. **`hint`: booking-v3 prints `MM/DD/YYYY` under its date field.** People at day-first tenants
+   (alder.physio, copper.studio, pale.harbour) type what the hint tells them. The form reads it
+   their way. Only `form` reports. Intake tagged 15 of these 33 as `parser`, so a parser fix
+   will not help them. The fix is the hint on booking-v3.
+3. **`one-day`: dates move by exactly one day.** This is not a month and day flip. The desk
+   notes already read 5 reports this way, but the table on the #4471 page counts them under
+   `parser`. Two of them point at time zones. The cause is not confirmed.
+
+## How the reports were placed
+
+- The ticket export has repeated rows. One id is one report: 427 rows, 412 reports.
+- Cause comes from the **tenant** (its locale and booking form), not from intake's browser
+  guess. The rule is in `causeOf` in `causes.ts`.
+- One-day moves come from `desk-notes.json`.
+
+## Tickets
+
+One GitHub issue per problem, each with its report count:
+[issue 1](https://github.com/pkulikow/what-it-shows-4471/issues/1) (parser),
+[issue 2](https://github.com/pkulikow/what-it-shows-4471/issues/2) (hint),
+[issue 3](https://github.com/pkulikow/what-it-shows-4471/issues/3) (one-day).
+
+## Lessons
+
+- Merging on a subject line ([decision 0001](/kb/decisions/0001-dedupe-by-subject)) joined
+  reports that only look alike. Read the body and the tenant before you merge.
+- A count in the title of a ticket hides how many bugs sit under it.
+
+<RenderStamp {signature} />
